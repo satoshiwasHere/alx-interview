@@ -3,6 +3,7 @@
 method that determines if all the boxes can be accesed
 """
 
+
 def canUnlockAll(boxes):
     '''
     determines if all the boxes can be opened or not
