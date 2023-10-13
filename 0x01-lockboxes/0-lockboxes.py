@@ -2,21 +2,29 @@
 """
 method that determines if all the boxes can be accesed
 """
-
 def canUnlockAll(boxes):
+    '''
+    determines if all the boxes can be opened or not
+    '''
+    length = len(boxes)
+    keys = set()
+    opened_boxes = []
+    i = 0
 
-    if (type(boxes) is not list):
-        return False
+    while i < length:
+        oldi = i
+        opened_boxes.append(i)
+        keys.update(boxes[i])
+        for key in keys:
+            if key != 0 and key < length and key not in opened_boxes:
+                i = key
+                break
+        if oldi != i:
+            continue
+        else:
+            break
 
-    if (len(boxes) == 0):
-        return False
-
-    keys = [0]
-    for i in keys:
-        for j in boxes[i]:
-            if j not in keys and j != i and j < len(boxes) and j != 0:
-                keys.append(j)
-    if len(keys) == len(boxes):
-        return True
-    else:
-        return False
+    for i in range(length):
+        if i not in opened_boxes and i != 0:
+            return False
+    return True
