@@ -1,41 +1,46 @@
 #!/usr/bin/python3
-'''
-This script that reads stdin line by line and computes metrics
-'''
-
+"""
+This script reads stdin line by line and computes metrics
+"""
 
 import sys
 
-cache = {'200': 0, '301': 0, '400': 0, '401': 0,
-         '403': 0, '404': 0, '405': 0, '500': 0}
 
-
-total_size = 0
-count = 0
+y = 0
+counta = 0
+status_code = {'200': 0,
+               '301': 0,
+               '400': 0,
+               '401': 0,
+               '403': 0,
+               '404': 0,
+               '405': 0,
+               '500': 0}
 
 try:
     for line in sys.stdin:
-        line_list = line.split(" ")
-        if len(line_list) > 4:
-            code = line_list[-2]
-            size = int(line_list[-1])
-            if code in cache.keys():
-                cache[code] += 1
-            total_size += size
-            count += 1
-
-        if count == 10:
-            count = 0
-            print('File size: {}'.format(total_size))
-            for key, value in sorted(cache.items()):
-                if value != 0:
-                    print('{}: {}'.format(key, value))
-
-except Exception as err:
+        args = line.split(' ')
+        if len(args) > 2:
+            status_line = args[-2]
+            file_size = args[-1]
+            if status_line in status_code:
+                status_code[status_line] += 1
+            counta += int(file_size)
+            y += 1
+            if y == 10:
+                print('File size: {:d}'.format(counta))
+                sorted_keys = sorted(status_code.keys())
+                for key in sorted_keys:
+                    value = status_code[key]
+                    if value != 0:
+                        print('{}: {}'.format(key, value))
+                y = 0
+except Exception:
     pass
-
 finally:
-    print('File size: {}'.format(total_size))
-    for key, value in sorted(cache.items()):
+    print('File size: {:d}'.format(counta))
+    sorted_keys = sorted(status_code.keys())
+    for key in sorted_keys:
+        value = status_code[key]
         if value != 0:
             print('{}: {}'.format(key, value))
